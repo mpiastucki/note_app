@@ -80,9 +80,7 @@ class _MainAppState extends State<MainApp> {
                 child: ElevatedButton(
                     onPressed: () async {
                       await db.put("notes", notes);
-                      setState(() {
-                        submitController.clear();
-                      });
+                      submitController.clear();
                     },
                     child: const Text("Save notes"))),
             Flexible(
