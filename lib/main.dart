@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
-void main() {
+void main() async {
+  await Hive.initFlutter();
+  await Hive.openBox<List>("noteBox");
+
   runApp(const MainApp());
 }
 
@@ -15,10 +19,25 @@ class MainApp extends StatefulWidget {
 
 class _MainAppState extends State<MainApp> {
   TextEditingController submitController = TextEditingController();
-  List<String> notes = [];
+  late List<dynamic> notes;
+  late Box<List> db;
+
+  @override
+  void initState() {
+    super.initState();
+
+    db = Hive.box("noteBox");
+    List<dynamic>? data = db.get("notes");
+    if (data != null) {
+      notes = data;
+    } else {
+      notes = [];
+    }
+  }
 
   @override
   void dispose() {
+    db.close();
     submitController.dispose();
     super.dispose();
   }
@@ -59,13 +78,13 @@ class _MainAppState extends State<MainApp> {
             Padding(
                 padding: const EdgeInsets.symmetric(vertical: 20),
                 child: ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
+                      await db.put("notes", notes);
                       setState(() {
-                        notes.add(submitController.text);
                         submitController.clear();
                       });
                     },
-                    child: const Text("Submit"))),
+                    child: const Text("Save notes"))),
             Flexible(
                 child: ListView.builder(
               padding: const EdgeInsets.all(10),
