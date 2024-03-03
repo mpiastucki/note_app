@@ -42,7 +42,10 @@ class _MainAppState extends State<MainApp> {
                 width: 700,
                 child: TextField(
                   onSubmitted: (t) {
-                    setState(() => notes.add(t));
+                    setState(() {
+                      notes.add(t);
+                      submitController.clear();
+                    });
                   },
                   style: const TextStyle(color: Colors.white),
                   controller: submitController,
@@ -57,7 +60,10 @@ class _MainAppState extends State<MainApp> {
                 padding: const EdgeInsets.symmetric(vertical: 20),
                 child: ElevatedButton(
                     onPressed: () {
-                      setState(() => notes.add(submitController.text));
+                      setState(() {
+                        notes.add(submitController.text);
+                        submitController.clear();
+                      });
                     },
                     child: const Text("Submit"))),
             Flexible(
