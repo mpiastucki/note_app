@@ -81,11 +81,20 @@ class _MainAppState extends State<MainApp> {
                       border: Border.all(),
                       borderRadius:
                           const BorderRadius.all(Radius.circular(10))),
-                  child: Center(
-                    child: Text(notes[index],
-                        style:
-                            const TextStyle(color: Colors.black, fontSize: 24)),
-                  ),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text(notes[index],
+                            style: const TextStyle(
+                                color: Colors.black, fontSize: 24)),
+                        IconButton(
+                            onPressed: () {
+                              setState(() {
+                                notes.removeAt(index);
+                              });
+                            },
+                            icon: const Icon(Icons.delete))
+                      ]),
                 );
               },
             ))
